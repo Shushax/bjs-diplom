@@ -9,3 +9,11 @@ login.loginFormCallback = (data) => {ApiConnector.login(data, () => {
  });
 }
 
+
+login.registerFormCallback = (data) => {ApiConnector.register(data, () => {
+    if (!data) {
+        login.setRegisterErrorMessage("Ошибка при регистрации!");
+    } else {
+        login.reload(true);
+    }
+})}
