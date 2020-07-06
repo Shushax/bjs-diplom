@@ -1,9 +1,11 @@
 "use strict";
 const login = new UserForm();
-login.loginFormCallback = (data) => ApiConnector.login(data, callback);
-if (!callback) {
-    login.setLoginErrorMessage("Ошибка при авторизации!");
-} else {
-    location.reload();
+login.loginFormCallback = (data) => {ApiConnector.login(data, () => {
+    if (!data) {
+        login.setLoginErrorMessage("Ошибка при авторизации!");
+    } else {
+        login.reload(true);
+  }  
+ });
 }
 
