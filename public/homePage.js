@@ -40,7 +40,7 @@ money.conversionMoneyCallback = (data) => ApiConnector.convertMoney(data, (respo
     } else {
         money.setMessage(false, "Ошибка при конвертировании валюты!")
     }
-})
+});
 
 money.sendMoneyCallback = (data) => ApiConnector.transferMoney(data, (responce) => {
     if (responce.success === true) {
@@ -49,5 +49,35 @@ money.sendMoneyCallback = (data) => ApiConnector.transferMoney(data, (responce) 
     } else {
         money.setMessage(false, "Ошибка при переводе валюты!")
     }
-})
+});
 
+const favorites = new FavoritesWidget();
+ApiConnector.getFavorites((responce) => {
+    if (responce.success === true) {
+        favorites.clearTable();
+        favorites.fillTable(responce.data);
+        money.updateUsersList(responce.data);
+    }
+});
+
+favorites.addUserCallback = (data) => ApiConnector.addUserToFavorites(data, (responce) => {
+    if (responce.success === true) {
+        favorites.clearTable();
+        favorites.fillTable(responce.data);
+        money.updateUsersList(responce.data);
+        favorites.setMessage(true, "Пользователь успешно добавлен!");
+    } else {
+        favorites.setMessage(false, "При добавлении пользователя произошла ошибка!");
+    }
+});
+
+favorites.removeUserCallback = (data) => ApiConnector.removeUserFromFavorites(data, (responce) => {
+    if (responce.success === true) {
+        favorites.clearTable();
+        favorites.fillTable(responce.data);
+        money.updateUsersList(responce.data);
+        favorites.setMessage(true, "Пользователь успешно удален!");
+    } else {
+        favorites.setMessage(false, "При удалении пользователя произошла ошибка!");
+    }
+});
